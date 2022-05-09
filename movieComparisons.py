@@ -16,7 +16,8 @@ def loadData(chosenYear, chosenMonth, chosenLang):
 
 st.title('Movie Comparison')
 
-st.subheader("This app allows you to filter movies by year, month, and language. It then displays ratings of the movies by vote average. The 43 most common movie languages have been provided.")
+st.subheader("This app allows you to filter a movie dataset by year, month, and language.")
+st.subheader("It then displays movie ratings by vote average. The 43 most common movie languages have been provided.")
 st.markdown("**For best results, use en(English) or ja(Japanese)**")
 
 st.sidebar.header('Movies Filter')
@@ -48,9 +49,3 @@ figVoteAvg = px.bar(
 )
 
 st.plotly_chart(figVoteAvg)
-
-st.subheader('Use search bar below to search similar movies.')
-st.subheader('Test with titles from above!')
-st.markdown('**Input can be any movie from any given year**')
-
-title = st.text_input('Movie Title')
