@@ -35,7 +35,7 @@ df = loadData(chosenYear, chosenMonth, chosenLang)
 st.dataframe(df)
 
 moviesByAverage = (
-    df.groupby(by=['Title']).sum()[['Vote_Average']]
+    df.groupby(by=['Title']).sum()[['Vote_Average']].sort_values('Vote_Average', ascending=True)
 )
 
 figVoteAvg = px.bar(
