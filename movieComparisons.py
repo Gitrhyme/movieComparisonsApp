@@ -104,7 +104,7 @@ title = st.text_input('Movie Title')
 if st.button('Search Similar Movies'):
 
     recommended, found = titleSearch(title, dfR)
-    
+    st.markdown(len(recommended))
     if found == 1:
         for i in range(len(recommended)):
             st.text(str(recommended[i]))
