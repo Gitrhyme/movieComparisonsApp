@@ -99,10 +99,10 @@ st.markdown('**Input can be any movie from any given year**')
 title = st.text_input('Movie Title')
 
 if st.button('Search Similar Movies'):
-    try:
-        recommended = titleSearch(title)
+    recommended = titleSearch(title)
+    if len(recommended) == 10:
         for i in range(len(recommended)):
                 st.text(str(recommended[i]))
                 st.text("")
-    except:
+    else:
         st.markdown(f'There is no movie called {title} in dataset. **Be Sure To Spell Title Correct** - try again...')
