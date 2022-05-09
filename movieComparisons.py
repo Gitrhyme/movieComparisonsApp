@@ -89,7 +89,7 @@ st.subheader('Test with titles from above!')
 st.markdown('**Input can be any movie from any given year**')
 title = st.text_input('Movie Title')
 if st.button('Search Similar Movies'):
-    if title != '':
+    if title != '' and title in dfR['Title']:
         title = title.strip()
         reccomended = list(get_recommendations(title))
         for i in range(len(reccomended)):
