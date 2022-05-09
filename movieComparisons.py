@@ -89,10 +89,11 @@ st.subheader('Test with titles from above!')
 st.markdown('**Input can be any movie from any given year**')
 title = st.text_input('Movie Title')
 if st.button('Search Similar Movies'):
-    title = title.strip()
-    reccomended = list(get_recommendations(title))
-    for i in range(len(reccomended)):
-        st.text(str(reccomended[i]))
-        st.text("")
-else:
-    st.markdown(f'There is no movie called {title} in dataset. **Be Sure To Spell Title Correct** - try again...')
+    if title != '':
+        title = title.strip()
+        reccomended = list(get_recommendations(title))
+        for i in range(len(reccomended)):
+            st.text(str(reccomended[i]))
+            st.text("")
+    else:
+        st.markdown(f'There is no movie called {title} in dataset. **Be Sure To Spell Title Correct** - try again...')
