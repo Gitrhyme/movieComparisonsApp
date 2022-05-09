@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import linear_kernel
 
 #Dataset Filter System
 def loadData(chosenYear, chosenMonth, chosenLang):
@@ -15,50 +13,6 @@ def loadData(chosenYear, chosenMonth, chosenLang):
   df3 = df2[df2['Month'] == chosenMonth]
   df4 = df3[df3['Original_Language'] == chosenLang]
   return df4
-
-
-def titleSearch(title):
-    recommended = 0
-    if title != '':
-        title = title.strip()
-        recommended = list(get_recommendations(title))
-    return recommended
-
-# Recommender System
-url = "https://raw.githubusercontent.com/samgitmaster/CSC310/main/mymoviedb.csv"
-dfR = pd.read_csv(url, lineterminator='\n')
-
-tfidf = TfidfVectorizer(stop_words='english')
-
-dfR['Overview'] = dfR['Overview'].fillna('')
-
-tfidf_matrix = tfidf.fit_transform(dfR['Overview'])
-
-cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
-
-indices = pd.Series(dfR.index, index=dfR['Title']).drop_duplicates()
-
-def get_recommendations(title, cosine_sim=cosine_sim):
-    try:
-        # Get the index of the movie that matches the title
-        idx = indices[title]
-
-        # Get the pairwsie similarity scores of all movies with that movie
-        sim_scores = list(enumerate(cosine_sim[idx]))
-            
-        # Sort the movies based on the similarity scores
-        sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-
-        # Get the scores of the 10 most similar movies
-        sim_scores = sim_scores[1:11]
-
-        # Get the movie indices
-        movie_indices = [i[0] for i in sim_scores]
-
-        # Return the top 10 most similar movies
-        return dfR['Title'].iloc[movie_indices]
-    except KeyError:
-        return -1, -2, -3
 
 st.title('Movie Comparison')
 
@@ -100,12 +54,3 @@ st.subheader('Test with titles from above!')
 st.markdown('**Input can be any movie from any given year**')
 
 title = st.text_input('Movie Title')
-
-if st.button('Search Similar Movies'):
-    recommended = titleSearch(title)
-    if len(recommended) == 10:
-        for i in range(len(recommended)):
-                st.text(str(recommended[i]))
-                st.text("")
-    else:
-        st.markdown(f'There is no movie called {title} in dataset. **Be Sure To Spell Title Correct** - try again...')
