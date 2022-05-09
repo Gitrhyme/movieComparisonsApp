@@ -17,15 +17,12 @@ def loadData(chosenYear, chosenMonth, chosenLang):
   return df4
 
 
-def titleSearch(title, df):
-    found = 0
+def titleSearch(title):
     recommended = 0
-    for i in range(len(df['Title'])):
-        if title != '' and title in df['Title'][i]:
-            found = 1
-            title = title.strip()
-            recommended = list(get_recommendations(title))
-    return recommended, found
+    if title != '':
+        title = title.strip()
+        recommended = list(get_recommendations(title))
+    return recommended
 
 # Recommender System
 url = "https://raw.githubusercontent.com/samgitmaster/CSC310/main/mymoviedb.csv"
@@ -102,12 +99,10 @@ st.markdown('**Input can be any movie from any given year**')
 title = st.text_input('Movie Title')
 
 if st.button('Search Similar Movies'):
-
-    recommended, found = titleSearch(title, dfR)
-    st.markdown(len(recommended))
-    if found == 1:
+    try:
+        recommended = titleSearch(title)
         for i in range(len(recommended)):
-            st.text(str(recommended[i]))
-            st.text("")
-    else:
+                st.text(str(recommended[i]))
+                st.text("")
+    except:
         st.markdown(f'There is no movie called {title} in dataset. **Be Sure To Spell Title Correct** - try again...')
