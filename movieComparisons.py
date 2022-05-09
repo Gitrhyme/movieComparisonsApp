@@ -16,6 +16,17 @@ def loadData(chosenYear, chosenMonth, chosenLang):
   df4 = df3[df3['Original_Language'] == chosenLang]
   return df4
 
+
+def titleSearch(title, df):
+    found = 0
+    recommended = 0
+    for i in range(len(df['Title'])):
+        if title != '' and title in df['Title'][i]:
+            found = 1
+            title = title.strip()
+            recommended = list(get_recommendations(title))
+    return recommended, found
+
 # Recommender System
 url = "https://raw.githubusercontent.com/samgitmaster/CSC310/main/mymoviedb.csv"
 dfR = pd.read_csv(url, lineterminator='\n')
@@ -87,13 +98,16 @@ st.plotly_chart(figVoteAvg)
 st.subheader('Use search bar below to search similar movies.')
 st.subheader('Test with titles from above!')
 st.markdown('**Input can be any movie from any given year**')
+
 title = st.text_input('Movie Title')
+
 if st.button('Search Similar Movies'):
-    if title != '' and title in dfR['Title']:
-        title = title.strip()
-        reccomended = list(get_recommendations(title))
-        for i in range(len(reccomended)):
-            st.text(str(reccomended[i]))
+
+    recommended, found = titleSearch(title, dfR)
+    
+    if found == 1:
+        for i in range(len(recommended)):
+            st.text(str(recommended[i]))
             st.text("")
     else:
         st.markdown(f'There is no movie called {title} in dataset. **Be Sure To Spell Title Correct** - try again...')
